@@ -9,6 +9,7 @@ return [
      * IpInfo
      * Telize (Recommended)
      * MaxMind
+     * IpGeoBaseRu
      */
     'drivers' => [
         'FreeGeoIp' => [
@@ -34,6 +35,10 @@ return [
                     'license_key' => '',
             ],
         ],
+
+        'IpGeoBaseRu' => [
+            'url' => 'http://ipgeobase.ru:7020/geo?ip='
+        ]
     ],
 
     /*

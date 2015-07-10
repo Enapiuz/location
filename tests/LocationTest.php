@@ -26,6 +26,29 @@ class LocationTest extends \PHPUnit_Framework_TestCase
         $this->session = m::mock('Illuminate\Session\SessionManager');
     }
 
+    public function testLocationDriverIpGeoBaseRu()
+    {
+        $this->config->shouldReceive('get')->andReturnValues([
+            'IpGeoBaseRu',
+            'Stevebauman\Location\Drivers\\',
+            'http://ipgeobase.ru:7020/geo?ip=',
+            '217.173.68.18'
+        ]);
+
+        $this->location = new Location($this->app, $this->config, $this->session);
+
+        $this->session
+            ->shouldReceive('forget')->once()->andReturn(true)
+            ->shouldReceive('has')->once()->andReturn(false)
+            ->shouldReceive('set')->once()->andReturn(true);
+
+        $location = $this->location->get();
+
+        $this->assertFalse($location->error);
+        $this->assertEquals('66.102.0.0', $location->ip);
+        $this->assertEquals('Stevebauman\Location\Drivers\FreeGeoIp', $location->driver);
+    }
+
     public function testLocationDriverFreeGeoIp()
     {
         $this->config->shouldReceive('get')->andReturnValues([
